@@ -3,6 +3,7 @@
 ```bash
 bhank-customer-service/
 
+.
 └── src/
     ├── Bhank.Customer.Api/
     │   ├── Application/
@@ -12,7 +13,8 @@ bhank-customer-service/
     │   ├── Domain/
     │   │   ├── Entities
     │   │   ├── Exceptions
-    │   │   ├── Interfaces
+    │   │   ├── Interfaces/
+    │   │   │   └── Repositories
     │   │   └── Services
     │   ├── Infra/
     │   │   ├── Configurations
@@ -27,3 +29,18 @@ bhank-customer-service/
 ├── README.md
 └── LICENSE
 ```
+
+## API Endpoints
+
+### 1. Create Customer
+
+- **URL:** `/Customer`
+- **Method:** `POST`
+- **Description:** This endpoint creates a new customer in the system.
+
+### 2. Get Customer By Id
+
+- **URL:** `/Customer`
+- **Method:** `GET`
+- **Parameters:** `clientId : string (UUID)`
+- **Description:** This endpoint retrieves a customer in the system by a unique ID.
