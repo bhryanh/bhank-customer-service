@@ -1,8 +1,6 @@
-using AutoMapper;
 using Bhank.Customer.Api.Application.DTOs;
 using Bhank.Customer.Api.Application.Interfaces;
-using Bhank.Customer.Api.Domain.Entities;
-using Bhank.Customer.Api.Domain.Interfaces.Repositories;
+using Bhank.Customer.Api.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bhank.Customer.Api.Application.Controllers
@@ -11,17 +9,11 @@ namespace Bhank.Customer.Api.Application.Controllers
     [Route("[controller]")]
     public class CustomerController : ControllerBase, ICustomerController
     {
-        private readonly ILogger<CustomerController> _logger;
-        private readonly ICustomerRepository _customerRepository;
-        private readonly IMapper _mapper;
+        private readonly ICustomerService _customerService;
         public CustomerController(
-            ILogger<CustomerController> logger,
-            ICustomerRepository customerRepository,
-            IMapper mapper
+            ICustomerService customerService
         ) {
-            _logger = logger;
-            _customerRepository = customerRepository;
-            _mapper = mapper;
+            _customerService = customerService;
          }
 
         
@@ -35,14 +27,14 @@ namespace Bhank.Customer.Api.Application.Controllers
         [HttpPost]
         [ProducesResponseType<CustomerDTO>(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult CreateCustomer([FromBody] CustomerDTO customerDTO)
+        public async Task<IActionResult> CreateCustomer([FromBody] CustomerDTO customerDTO)
         {
-            var customer = _customerRepository.CreateCustomer(_mapper.Map<CustomerEntity>(customerDTO));
-            
-            if (customer != null)
-                return Ok(_mapper.Map<CustomerDTO>(customer));
-            
-            return BadRequest("Error creating customer");
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var createdCustomer = await _customerService.CreateCustomerAsync(customerDTO);
+            return CreatedAtAction(nameof(CreateCustomer), new { id = createdCustomer.Id }, createdCustomer);
         }
 
         /// <summary>
@@ -54,11 +46,13 @@ namespace Bhank.Customer.Api.Application.Controllers
         /// <response code="404">If the customer is not found</response>
         [HttpGet]
         [ProducesResponseType<CustomerDTO>(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetCustomerById([FromQuery]Guid clientId)
+        public async Task<IActionResult> GetCustomerById([FromQuery]Guid customerId)
         {
-            var customer = await _customerRepository.GetCustomerByIdAsync(clientId);
-            var customerDTO = _mapper.Map<CustomerDTO>(customer);
-            return Ok(customerDTO);
+            if(customerId == Guid.Empty)
+                return BadRequest("Invalid customer ID");
+                
+            var customer = await _customerService.GetCustomerAsync(customerId);
+            return Ok(customer);
         }
     }
 }

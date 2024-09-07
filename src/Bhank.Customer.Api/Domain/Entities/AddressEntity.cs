@@ -5,11 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Bhank.Customer.Api.Domain.Entities
 {
     [Table("Address")]
-    public class AddressEntity
+    public class AddressEntity : BaseEntity
     {
-        [Key]
-        public Guid Id { get; set; }
-
         [Required]
         [StringLength(100)]
         public string Street { get; set; }
@@ -29,7 +26,5 @@ namespace Bhank.Customer.Api.Domain.Entities
         [Required]
         [StringLength(50)]
         public string Country { get; set; }
-
-        public CustomerEntity Customer { get; set; }
     }
 }

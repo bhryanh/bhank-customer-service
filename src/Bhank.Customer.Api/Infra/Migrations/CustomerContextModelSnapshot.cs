@@ -39,6 +39,9 @@ namespace Customer.Infra.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("PostalCode")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -53,6 +56,9 @@ namespace Customer.Infra.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -71,7 +77,7 @@ namespace Customer.Infra.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("DateOfBirth")
+                    b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
@@ -88,6 +94,7 @@ namespace Customer.Infra.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
@@ -101,13 +108,12 @@ namespace Customer.Infra.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId")
-                        .IsUnique();
+                    b.HasIndex("AddressId");
 
                     b.ToTable("Customer", "customer_account");
                 });
@@ -115,18 +121,12 @@ namespace Customer.Infra.Migrations
             modelBuilder.Entity("Bhank.Customer.Api.Domain.Entities.CustomerEntity", b =>
                 {
                     b.HasOne("Bhank.Customer.Api.Domain.Entities.AddressEntity", "Address")
-                        .WithOne("Customer")
-                        .HasForeignKey("Bhank.Customer.Api.Domain.Entities.CustomerEntity", "AddressId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Address");
-                });
-
-            modelBuilder.Entity("Bhank.Customer.Api.Domain.Entities.AddressEntity", b =>
-                {
-                    b.Navigation("Customer")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

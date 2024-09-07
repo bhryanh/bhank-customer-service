@@ -5,6 +5,6 @@ namespace Bhank.Customer.Api.Domain.Interfaces.Repositories
     public interface ICustomerRepository
     {
         Task<CustomerEntity> GetCustomerByIdAsync(Guid id);
-        CustomerEntity CreateCustomer(CustomerEntity customer);
+        Task<CustomerEntity> CreateCustomerAsync(CustomerEntity customer);
     }
 }

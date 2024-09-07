@@ -20,22 +20,6 @@ namespace Bhank.Customer.Api.Infra
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.HasDefaultSchema("customer_account");
-
-            modelBuilder.Entity<CustomerEntity>()
-                .HasKey(c => c.Id);
-
-            modelBuilder.Entity<CustomerEntity>()
-                .Property(p => p.LastName)
-                .IsRequired(false);
-
-            modelBuilder.Entity<CustomerEntity>()
-                .HasOne(c => c.Address)
-                .WithOne(a => a.Customer)
-                .HasForeignKey<CustomerEntity>(c => c.AddressId)
-                .OnDelete(DeleteBehavior.Restrict);    
-
-            modelBuilder.Entity<AddressEntity>()
-                .HasKey(c => c.Id);
         }
     }
 

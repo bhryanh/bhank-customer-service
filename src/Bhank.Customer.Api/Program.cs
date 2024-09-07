@@ -1,8 +1,10 @@
 using System.Reflection;
 using AutoMapper;
 using Bhank.Customer.Api.Application.DTOs;
+using Bhank.Customer.Api.Application.Services;
 using Bhank.Customer.Api.Domain.Entities;
 using Bhank.Customer.Api.Domain.Interfaces.Repositories;
+using Bhank.Customer.Api.Domain.Interfaces.Services;
 using Bhank.Customer.Api.Infra;
 using Bhank.Customer.Api.Infra.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -29,16 +31,19 @@ builder.Services.AddLogging(loggingBuilder =>
     loggingBuilder.AddDebug();
 });
 
-builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 var configuration = new MapperConfiguration(cfg =>
 {
     cfg.CreateMap<CustomerEntity, CustomerDTO>();
     cfg.CreateMap<CustomerDTO, CustomerEntity>();
+    cfg.CreateMap<AddressEntity, AddressDTO>();
+    cfg.CreateMap<AddressDTO, AddressEntity>();
 });
 
 var mapper = configuration.CreateMapper();
-
 
 builder.Services.AddSingleton(mapper);
 
@@ -50,6 +55,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 app.UseHttpsRedirection();
 app.MapControllers();

@@ -6,23 +6,23 @@ namespace Bhank.Customer.Api.Infra.Repositories
     public class CustomerRepository : ICustomerRepository
     {
         private readonly CustomerContext _dbContext;
-        private readonly ILogger<CustomerRepository> _logger;
+        private readonly ILogger<ICustomerRepository> _logger;
 
         public CustomerRepository(
             CustomerContext dbContext,
-            ILogger<CustomerRepository> logger
+            ILogger<ICustomerRepository> logger
         )
         {
             _dbContext = dbContext;
             _logger = logger;
         }
 
-        public CustomerEntity CreateCustomer(CustomerEntity customer)
+        public async Task<CustomerEntity> CreateCustomerAsync(CustomerEntity customer)
         {
             try
             {
                 var customerCreated = _dbContext.Add(customer);
-                _dbContext.SaveChanges();
+                await _dbContext.SaveChangesAsync();
                 return customerCreated.Entity;
             }
             catch(Exception ex)
@@ -34,7 +34,15 @@ namespace Bhank.Customer.Api.Infra.Repositories
 
         public async Task<CustomerEntity> GetCustomerByIdAsync(Guid id)
         {
-            return await _dbContext.Customers.FindAsync(id);
+            try
+            {
+                return await _dbContext.Customers.FindAsync(id);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Error getting customer by id");
+                throw;
+            }
         }
     }
 }
