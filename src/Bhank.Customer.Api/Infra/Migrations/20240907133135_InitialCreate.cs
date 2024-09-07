@@ -6,17 +6,17 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Customer.Infra.Migrations
 {
     /// <inheritdoc />
-    public partial class InitalCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "customer");
+                name: "customer_account");
 
             migrationBuilder.CreateTable(
                 name: "Address",
-                schema: "customer",
+                schema: "customer_account",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -33,7 +33,7 @@ namespace Customer.Infra.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Customer",
-                schema: "customer",
+                schema: "customer_account",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -54,7 +54,7 @@ namespace Customer.Infra.Migrations
                     table.ForeignKey(
                         name: "FK_Customer_Address_AddressId",
                         column: x => x.AddressId,
-                        principalSchema: "customer",
+                        principalSchema: "customer_account",
                         principalTable: "Address",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -62,7 +62,7 @@ namespace Customer.Infra.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customer_AddressId",
-                schema: "customer",
+                schema: "customer_account",
                 table: "Customer",
                 column: "AddressId",
                 unique: true);
@@ -73,11 +73,11 @@ namespace Customer.Infra.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Customer",
-                schema: "customer");
+                schema: "customer_account");
 
             migrationBuilder.DropTable(
                 name: "Address",
-                schema: "customer");
+                schema: "customer_account");
         }
     }
 }

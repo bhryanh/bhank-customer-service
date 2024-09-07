@@ -10,7 +10,7 @@ namespace Bhank.Customer.Api.Infra
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseNpgsql(
-                x => x.MigrationsHistoryTable("__MyMigrationsHistory", "customer"));
+                x => x.MigrationsHistoryTable("__MyMigrationsHistory", "customer_account"));
 
         public DbSet<CustomerEntity> Customers { get; set; }
         public DbSet<AddressEntity> Addresses { get; set; }
@@ -19,7 +19,7 @@ namespace Bhank.Customer.Api.Infra
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.HasDefaultSchema("customer");
+            modelBuilder.HasDefaultSchema("customer_account");
 
             modelBuilder.Entity<CustomerEntity>()
                 .HasKey(c => c.Id);
@@ -36,7 +36,6 @@ namespace Bhank.Customer.Api.Infra
 
             modelBuilder.Entity<AddressEntity>()
                 .HasKey(c => c.Id);
-      
         }
     }
 

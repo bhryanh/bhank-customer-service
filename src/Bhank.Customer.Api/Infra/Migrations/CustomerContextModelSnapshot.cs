@@ -17,7 +17,7 @@ namespace Customer.Infra.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("customer")
+                .HasDefaultSchema("customer_account")
                 .HasAnnotation("ProductVersion", "8.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -56,7 +56,7 @@ namespace Customer.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Address", "customer");
+                    b.ToTable("Address", "customer_account");
                 });
 
             modelBuilder.Entity("Bhank.Customer.Api.Domain.Entities.CustomerEntity", b =>
@@ -109,7 +109,7 @@ namespace Customer.Infra.Migrations
                     b.HasIndex("AddressId")
                         .IsUnique();
 
-                    b.ToTable("Customer", "customer");
+                    b.ToTable("Customer", "customer_account");
                 });
 
             modelBuilder.Entity("Bhank.Customer.Api.Domain.Entities.CustomerEntity", b =>
