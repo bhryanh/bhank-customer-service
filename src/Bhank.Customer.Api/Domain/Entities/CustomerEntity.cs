@@ -26,8 +26,21 @@ namespace Bhank.Customer.Api.Domain.Entities
         public string Nationality { get; set; }
 
         [Required]
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
         public Guid AddressId { get; set; }
         public AddressEntity Address { get; set; }
+
+
+        public void Activate()
+        {
+            IsActive = true;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void Inactivate()
+        {
+            IsActive = false;
+            UpdatedAt = DateTime.UtcNow;
+        }
     }
 }

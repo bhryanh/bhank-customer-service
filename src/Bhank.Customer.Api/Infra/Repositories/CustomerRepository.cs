@@ -44,5 +44,45 @@ namespace Bhank.Customer.Api.Infra.Repositories
                 throw;
             }
         }
+
+        public async Task<bool> ActivateCustomer(Guid id)
+        {
+            try
+            {
+                var customer = await _dbContext.Customers.FindAsync(id);
+                if (customer == null)
+                    return false;
+
+                customer.Activate();
+                _dbContext.Update(customer);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Error activating customer");
+                throw;
+            }
+        }
+
+        public async Task<bool> InactivateCustomer(Guid id)
+        {
+            try
+            {
+                var customer = await _dbContext.Customers.FindAsync(id);
+                if (customer == null)
+                    return false;
+
+                customer.Inactivate();
+                _dbContext.Update(customer);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Error inactivating customer");
+                throw;
+            }
+        }
     }
 }

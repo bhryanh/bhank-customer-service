@@ -54,5 +54,41 @@ namespace Bhank.Customer.Api.Application.Controllers
             var customer = await _customerService.GetCustomerAsync(customerId);
             return Ok(customer);
         }
+
+        [HttpPut("{customerId}/activate")]
+        [ProducesResponseType<IActionResult>(StatusCodes.Status200OK)]
+        [ProducesResponseType<IActionResult>(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType<IActionResult>(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> ActivateCustomer(Guid customerId)
+        {
+            if(customerId == Guid.Empty)
+                return BadRequest(new { message = "Invalid Customer Id" });
+
+            var result = await _customerService.ActivateCustomer(customerId);
+
+            if(!result)
+                return NotFound(new { message = "Customer not found" });
+
+            return Ok(new { message = "Customer activated succesfully" });
+        }
+
+        [HttpPut("{customerId}/inactivate")]
+        [ProducesResponseType<IActionResult>(StatusCodes.Status200OK)]
+        [ProducesResponseType<IActionResult>(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType<IActionResult>(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> InactivateCustomer(Guid customerId)
+        {
+            if(customerId == Guid.Empty)
+                return BadRequest(new { message = "Invalid Customer Id" });
+
+            var result = await _customerService.InactivateCustomer(customerId);
+
+            if(!result)
+                return NotFound(new { message = "Customer not found" });
+
+            return Ok(new { message = "Customer inactivated succesfully" });
+        }
+
+    
     }
 }
