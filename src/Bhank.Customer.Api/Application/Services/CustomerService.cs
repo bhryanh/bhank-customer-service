@@ -56,5 +56,19 @@ namespace Bhank.Customer.Api.Application.Services
         {
             return await _customerRepository.InactivateCustomer(id);
         }
+
+        public async Task<CustomerDTO> UpdateCustomerAsync(Guid id, UpdateCustomerDTO customerDTO)
+        {
+            var customer = await _customerRepository.UpdateCustomerAsync(id, _mapper.Map<CustomerEntity>(customerDTO));
+
+            return _mapper.Map<CustomerDTO>(customer);
+        }
+
+        public async Task<AddressDTO> UpdateCustomerAddressAsync(Guid id, AddressDTO addressDTO)
+        {
+            var address = await _customerRepository.UpdateCustomerAddressAsync(id, _mapper.Map<AddressEntity>(addressDTO));
+
+            return _mapper.Map<AddressDTO>(address);
+        }
     }
 }

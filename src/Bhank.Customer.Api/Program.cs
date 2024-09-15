@@ -39,6 +39,7 @@ var configuration = new MapperConfiguration(cfg =>
 {
     cfg.CreateMap<CustomerEntity, CustomerDTO>();
     cfg.CreateMap<CustomerDTO, CustomerEntity>();
+    cfg.CreateMap<UpdateCustomerDTO, CustomerEntity>();
     cfg.CreateMap<AddressEntity, AddressDTO>();
     cfg.CreateMap<AddressDTO, AddressEntity>();
 });
