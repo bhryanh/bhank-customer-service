@@ -1,5 +1,4 @@
 using Bhank.Customer.Api.Application.DTOs;
-using Bhank.Customer.Api.Application.Interfaces;
 using Bhank.Customer.Api.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +6,7 @@ namespace Bhank.Customer.Api.Application.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CustomerController : ControllerBase, ICustomerController
+    public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _customerService;
         public CustomerController(
@@ -44,9 +43,9 @@ namespace Bhank.Customer.Api.Application.Controllers
         /// <returns>The customer with the specified ID.</returns>
         /// <response code="200">Returns the customer</response>
         /// <response code="404">If the customer is not found</response>
-        [HttpGet]
+        [HttpGet("{customerId}")]
         [ProducesResponseType<CustomerDTO>(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetCustomerById([FromQuery]Guid customerId)
+        public async Task<IActionResult> GetCustomerById(Guid customerId)
         {
             if(customerId == Guid.Empty)
                 return BadRequest("Invalid customer ID");
@@ -54,6 +53,20 @@ namespace Bhank.Customer.Api.Application.Controllers
             var customer = await _customerService.GetCustomerAsync(customerId);
             return Ok(customer);
         }
+
+        /// <summary>
+        /// Retrieves a list of all customers.
+        /// </summary>
+        /// <returns>A list of customers.</returns>
+        /// <response code="200">Returns the list of customers</response>
+        [HttpGet]
+        [ProducesResponseType<List<CustomerDTO>>(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllCustomers()
+        {
+            var customers = await _customerService.GetAllCustomersAsync();
+            return Ok(customers);
+        }
+
 
         /// <summary>
         /// Update customer with a given Id of the Customer

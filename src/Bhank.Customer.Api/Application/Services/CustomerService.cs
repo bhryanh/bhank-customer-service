@@ -47,6 +47,13 @@ namespace Bhank.Customer.Api.Application.Services
             return _mapper.Map<CustomerDTO>(customer);
         }
 
+        public async Task<List<CustomerDTO>> GetAllCustomersAsync()
+        {
+            var customer = await _customerRepository.GetAllCustomersAsync();
+
+            return _mapper.Map<List<CustomerDTO>>(customer);
+        }
+
         public async Task<bool> ActivateCustomer(Guid id)
         {
             return await _customerRepository.ActivateCustomer(id);

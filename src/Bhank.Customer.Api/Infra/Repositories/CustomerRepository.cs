@@ -46,6 +46,19 @@ namespace Bhank.Customer.Api.Infra.Repositories
             }
         }
 
+        public async Task<List<CustomerEntity>> GetAllCustomersAsync()
+        {
+            try
+            {
+                return await _dbContext.Customers.ToListAsync();
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Error getting all customers");
+                throw;
+            }
+        }
+
         public async Task<bool> ActivateCustomer(Guid id)
         {
             try
