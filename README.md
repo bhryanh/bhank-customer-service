@@ -1,5 +1,7 @@
 # bhank-customer-service
 
+This API provides endpoints for managing customer information and addresses within the system. It allows for the creation and retrieval of customers and addresses using UUIDs for identification.
+
 ```bash
 bhank-customer-service/
 
